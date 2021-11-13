@@ -8,10 +8,10 @@
             url: ajax.url,
             type: 'post',
             data: {
-                action: 'import_programs'
+                action: 'import_featured_programs'
             },
-            success: function() {
-
+            success: function(resp) {
+                $('#myuna_api_featured').val(resp);
             }
         })
     })
