@@ -46,8 +46,6 @@ if ( !class_exists( 'MyunaAPIData' ) ) {
 
         function import_featured_programs(){
             set_time_limit(0);
-            self::savedb('history', ['date' => date('Y/m/d h:i:sa')]);
-            die;
             $resp = array('success' => true);
             
             // ini_set('display_errors', 1);
@@ -854,13 +852,19 @@ if ( !class_exists( 'MyunaAPIData' ) ) {
                 'fall' => $fallPrograms,
                 'winter' => $winterPrograms,
             ));
+
+            $import_date = date('Y/m/d h:i:sa');
+            self::savedb('history', ['date' => $import_date]);
             
             $resp['featured_programs'] = array(
                 'spring' => count($springPrograms),
                 'summer' => count($summerPrograms),
                 'fall' => count($fallPrograms),
-                'winter' => count($winterPrograms),
+                'winter' => count($winterPrograms)                
             );
+
+            $resp['date'] = $import_date;
+            
             echo json_encode($resp);
             exit;
         }

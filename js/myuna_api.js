@@ -12,9 +12,10 @@
             data: {
                 action: 'import_featured_programs'
             },
-            // dataType: 'json',
+            dataType: 'json',
             success: function(resp) {
                 alert('Imported Successfully');
+                $('#last_import_date').text(resp.date);
                 $(btn_instance).find('.processing-btn-wrap').removeClass('processing');
             }
         })

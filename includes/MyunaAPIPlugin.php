@@ -103,19 +103,11 @@ if ( !class_exists( 'MyunaAPIPlugin' ) ) {
             <div class="myuna-api-form">
                 <?php 
                 settings_fields( 'myuna_api_plugin_options' );
-                do_settings_sections( 'myuna_api_plugin' ); ?>
+                do_settings_sections( 'myuna_api_plugin' );
+                ?>
                 <button class="button button-primary" id="myuna_api_settings_save_btn">
                     <div class="processing-btn-wrap">
                         <div><?php esc_attr_e( 'Save' ); ?></div>
-                        <div class="icon"></div>
-                    </div>
-                </button>
-            </div>
-            <div class="" style="display: none">
-                <h2>Myuna API Manually</h2>
-                <button class="button button-primary" id="myuna_api_import_manually_btn">
-                    <div class="processing-btn-wrap">
-                        <div>Import Manually</div>
                         <div class="icon"></div>
                     </div>
                 </button>
@@ -142,7 +134,24 @@ if ( !class_exists( 'MyunaAPIPlugin' ) ) {
         }
 
         function myuna_api_plugin_section_text() {
-            echo '<p>Here you can set all the options</p>';
+            $myunaAPI = new MyunaAPIData();
+            
+            $history = $myunaAPI->loaddb('history');
+            $last_import_date = '';
+            if($history && isset($history['date'])) {
+                $last_import_date = $history['date'];
+            }
+            ?>
+            <div class="">
+                <p>Last imported: <span id="last_import_date"><?php echo $last_import_date?></span></p>
+                <button class="button button-primary" id="myuna_api_import_manually_btn">
+                    <div class="processing-btn-wrap">
+                        <div>Import Manually</div>
+                        <div class="icon"></div>
+                    </div>
+                </button>
+            </div>
+            <?php
         }
         
         function myuna_api_plugin_setting_times() {
