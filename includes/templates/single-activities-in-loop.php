@@ -11,8 +11,8 @@
   // Work Out Season
   $startDate = $brandNewArray[$i]['ProgramDates'][0];
   $endDate = end($brandNewArray[$i]['ProgramDates']);
-  $startSeason = strtolower(get_season("$startDate", "northern"));
-  $endSeason = strtolower(get_season("$endDate", "northern"));
+  $startSeason = strtolower(plugin_get_season("$startDate", "northern"));
+  $endSeason = strtolower(plugin_get_season("$endDate", "northern"));
 
   // Age Range
   $ageMax = $brandNewArray[$i]['MaximumAge'];
@@ -38,17 +38,17 @@
     }
   }
 
-  $differentCategories = slugify($brandNewArray[$i]['CalendarCategory']);
+  $differentCategories = plugin_slugify($brandNewArray[$i]['CalendarCategory']);
 
 
-  $lowerProgram = slugify($brandNewArray[$i]['CalendarName']);
+  $lowerProgram = plugin_slugify($brandNewArray[$i]['CalendarName']);
 
-  $seasons = slugify($brandNewArray[$i]['Season']);
+  $seasons = plugin_slugify($brandNewArray[$i]['Season']);
 
 
-  $groupCapacity = slugify($brandNewArray[$i]['Participants']);
-  $classSpace = slugify($brandNewArray[$i]['Availability']);
-  $classLocation = slugify($brandNewArray[$i]['LocationName']);
+  $groupCapacity = plugin_slugify($brandNewArray[$i]['Participants']);
+  $classSpace = plugin_slugify($brandNewArray[$i]['Availability']);
+  $classLocation = plugin_slugify($brandNewArray[$i]['LocationName']);
 
 ?>
 

@@ -111,8 +111,8 @@ if ( !class_exists( 'MyunaAPIShortcode' ) ) {
                             // Work Out Season
                             $startDate = $brandNewArray[$i]['ProgramDates'][0];
                             $endDate = end($brandNewArray[$i]['ProgramDates']);
-                            $startSeason = strtolower(get_season("$startDate", "northern"));
-                            $endSeason = strtolower(get_season("$endDate", "northern"));
+                            $startSeason = strtolower(plugin_get_season("$startDate", "northern"));
+                            $endSeason = strtolower(plugin_get_season("$endDate", "northern"));
 
                             // Age Range
                             $ageMax = $brandNewArray[$i]['MaximumAge'];
@@ -138,15 +138,15 @@ if ( !class_exists( 'MyunaAPIShortcode' ) ) {
                                 }
                             }
 
-                            $differentCategories = slugify($brandNewArray[$i]['CalendarCategory']);
+                            $differentCategories = plugin_slugify($brandNewArray[$i]['CalendarCategory']);
 
-                            $lowerProgram = slugify($brandNewArray[$i]['CalendarName']);
+                            $lowerProgram = plugin_slugify($brandNewArray[$i]['CalendarName']);
 
-                            $seasons = slugify($brandNewArray[$i]['Season']);
+                            $seasons = plugin_slugify($brandNewArray[$i]['Season']);
 
-                            $groupCapacity = slugify($brandNewArray[$i]['Participants']);
-                            $classSpace = slugify($brandNewArray[$i]['Availability']);
-                            $classLocation = slugify($brandNewArray[$i]['LocationName']);
+                            $groupCapacity = plugin_slugify($brandNewArray[$i]['Participants']);
+                            $classSpace = plugin_slugify($brandNewArray[$i]['Availability']);
+                            $classLocation = plugin_slugify($brandNewArray[$i]['LocationName']);
 
                         ?>
 
@@ -509,7 +509,7 @@ if ( !class_exists( 'MyunaAPIShortcode' ) ) {
                                 <option value="*">All Seasons</option>
                                 <?php
                                 foreach ($uniqueSeasons as $season) {
-                                    echo '<option value=".'.slugify($season).'">'. $season. '</option>';
+                                    echo '<option value=".'.plugin_slugify($season).'">'. $season. '</option>';
                                 }
                                 ?>
                             </select>
@@ -528,7 +528,7 @@ if ( !class_exists( 'MyunaAPIShortcode' ) ) {
                                 <option value="*">All Activities</option>
                                 <?php
                                 foreach ($uniquePrograms as $program) {
-                                    echo '<option value=".'.slugify($program).'">'. $program. '</option>';
+                                    echo '<option value=".'.plugin_slugify($program).'">'. $program. '</option>';
                                 }
                                 ?>
                             </select>
@@ -539,7 +539,7 @@ if ( !class_exists( 'MyunaAPIShortcode' ) ) {
                                 <option value="*">All Groups</option>
                                 <?php
                                 foreach ($uniqueGroups as $group) {
-                                    echo '<option value=".'.slugify($group).'">'. $group. '</option>';
+                                    echo '<option value=".'.plugin_slugify($group).'">'. $group. '</option>';
                                 }
                                 ?>
                             </select>
@@ -549,7 +549,7 @@ if ( !class_exists( 'MyunaAPIShortcode' ) ) {
                                 <option value="*">All Availabilies</option>
                                 <?php
                                 foreach ($uniqueAvailability as $availability) {
-                                    echo '<option value=".'.slugify($availability).'">'. $availability. '</option>';
+                                    echo '<option value=".'.plugin_slugify($availability).'">'. $availability. '</option>';
                                 }
                                 ?>
                             </select>
@@ -559,7 +559,7 @@ if ( !class_exists( 'MyunaAPIShortcode' ) ) {
                             <option value="*">All Locations</option>
                                 <?php
                                 foreach ($uniqueLocations as $location) {
-                                    echo '<option value=".'.slugify($location).'">'. $location. '</option>';
+                                    echo '<option value=".'.plugin_slugify($location).'">'. $location. '</option>';
                                 }
                                 ?>
                             </select>
@@ -607,7 +607,7 @@ if ( !class_exists( 'MyunaAPIShortcode' ) ) {
                     </form>
                 </div>
             </div>
-            <div class="filtered-programs-section" id="activities_loop_1">
+            <div class="filtered-programs-section" id="activities_loop_1" style="display: none">
                 <div class="toggle-button-container">
                     <li class="toggle-program-button" id="grid-button">Grid View</button>
                     <li class="toggle-program-button" id="list-button">List View</button>
