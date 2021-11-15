@@ -1,5 +1,5 @@
 <?php
-function get_season($date="", $hemisphere="northern") {
+function plugin_get_season($date="", $hemisphere="northern") {
 
     // Set $date to today if no date specified
     if ($date=="") { $date = date("Y-m-d"); }
@@ -62,7 +62,7 @@ function get_season($date="", $hemisphere="northern") {
 
 }
 
-function slugify($text)
+function plugin_slugify($text)
 {
     // replace non letter or digits by -
     $text = preg_replace('~[^\pL\d]+~u', '-', $text);
