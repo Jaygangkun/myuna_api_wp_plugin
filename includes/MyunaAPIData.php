@@ -40,8 +40,14 @@ if ( !class_exists( 'MyunaAPIData' ) ) {
             return unserialize(file_get_contents($file));
         }
 
+        function cronjob() {
+            self::import_featured_programs();
+        }
+
         function import_featured_programs(){
             set_time_limit(0);
+            self::savedb('history', ['date' => date('Y/m/d h:i:sa')]);
+            die;
             $resp = array('success' => true);
             
             // ini_set('display_errors', 1);
