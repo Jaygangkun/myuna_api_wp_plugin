@@ -58,24 +58,34 @@ if ( !class_exists( 'MyunaAPIPlugin' ) ) {
         }
 
         function myuna_api_js_css() {
-            wp_enqueue_style( 'myuna_api_style',  plugin_dir_url( __FILE__ ) . '/css/myuna_api.css' );
-            wp_enqueue_script( 'myuna_api_script',  plugin_dir_url( __FILE__ ) . '/js/myuna_api.js' );
+            wp_enqueue_style( 'myuna_api_style',  plugin_dir_url( __FILE__ ) . '../css/myuna_api.css' );
+            wp_enqueue_script( 'myuna_api_script',  plugin_dir_url( __FILE__ ) . '../js/myuna_api.js' );
             wp_localize_script( 'myuna_api_script', 'ajax', array( 'url' => admin_url( 'admin-ajax.php' ) ) );
         }
 
         function myuna_api_settings_page() {
             ?>
-            <form action="options.php" method="post">
+            <div class="myuna-api-form">
                 <?php 
                 settings_fields( 'myuna_api_plugin_options' );
                 do_settings_sections( 'myuna_api_plugin' ); ?>
-                <input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
-            </form>
+                <button class="button button-primary" id="myuna_api_settings_save_btn">
+                    <div class="processing-btn-wrap">
+                        <div><?php esc_attr_e( 'Save' ); ?></div>
+                        <div class="icon"></div>
+                    </div>
+                </button>
+            </div>
             <h2>Myuna API Manually</h2>
-            <button class="button button-primary" id="myuna_api_import_manually_btn">Import Manually</button>
+            <button class="button button-primary" id="myuna_api_import_manually_btn">
+                <div class="processing-btn-wrap">
+                    <div>Import Manually</div>
+                    <div class="icon"></div>
+                </div>
+            </button>
             <?php
-            // $myunaAPI = new MyunaAPI();
-            // $myunaAPI->import_programs();
+            // $myunaAPI = new MyunaAPIData();
+            // $myunaAPI->save_settings();
         }
 
         function myuna_api_plugin_settings() {
@@ -83,7 +93,6 @@ if ( !class_exists( 'MyunaAPIPlugin' ) ) {
             add_settings_section( 'myuna_api_settings', 'Myuna API Settings', ['MyunaAPIPlugin', 'myuna_api_plugin_section_text'], 'myuna_api_plugin' );
         
             add_settings_field( 'myuna_api_times', 'Times to run every day', ['MyunaAPIPlugin', 'myuna_api_plugin_setting_times'], 'myuna_api_plugin', 'myuna_api_settings' );
-            add_settings_field( 'myuna_api_featured_programs', 'Featured Programs', ['MyunaAPIPlugin', 'myuna_api_plugin_setting_featured_programs'], 'myuna_api_plugin', 'myuna_api_settings' );
         }
 
         function myuna_api_plugin_options_validate( $input ) {
@@ -101,12 +110,7 @@ if ( !class_exists( 'MyunaAPIPlugin' ) ) {
         
         function myuna_api_plugin_setting_times() {
             $options = get_option( 'myuna_api_plugin_options' );
-            echo "<input id='myuna_api_times' name='myuna_api_plugin_options[times]' type='number' value='" . esc_attr( $options['times'] ) . "' />";
-        }
-
-        function myuna_api_plugin_setting_featured_programs() {
-            $options = get_option( 'myuna_api_plugin_options' );
-            echo "<textarea id='myuna_api_featured' name='myuna_api_plugin_options[featured]' >" . esc_attr( $options['featured'] ) . "</textarea>";
+            echo "<input id='myuna_api_times' type='number' value='" . esc_attr( isset($options['times']) ? $options['times'] : '' ) . "' />";
         }
     }
 }

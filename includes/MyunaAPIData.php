@@ -3,12 +3,47 @@ if ( !class_exists( 'MyunaAPIData' ) ) {
     class MyunaAPIData
     {
         public static function init() {
+            add_action( "wp_ajax_save_settings", ['MyunaAPIData', "save_settings"] );
+            add_action( "wp_ajax_nopriv_save_settings", ['MyunaAPIData', "save_settings"] );
+
             add_action( "wp_ajax_import_featured_programs", ['MyunaAPIData', "import_featured_programs"] );
             add_action( "wp_ajax_nopriv_import_featured_programs", ['MyunaAPIData', "import_featured_programs"] );
         }
 
+        function savedb($name, $data) {
+            $file = plugin_dir_path(__FILE__).'../db/'.$name;
+            file_put_contents($file, serialize($data));
+        }
+
+        function loaddb($name) {
+            $file = plugin_dir_path(__FILE__).'../db/'.$name;
+            if(file_exists($file)) {
+                return unserialize(file_get_contents($file));
+            }
+            else {
+                return null;
+            }
+        }
+
+        function save_settings() {
+            $resp = array('success' => true);
+            self::savedb('settings', array(
+                'times' => isset($_POST['times']) ? $_POST['times'] : '',
+            ));
+                        
+            echo json_encode($resp);
+            exit;
+        }
+
+        function get_featured_programs() {
+            $file = plugin_dir_path(__FILE__).'../db/featured_programs';
+            return unserialize(file_get_contents($file));
+        }
+
         function import_featured_programs(){
             set_time_limit(0);
+            $resp = array('success' => true);
+            
             // ini_set('display_errors', 1);
             // ini_set('display_startup_errors', 1);
             // error_reporting(E_ALL);
@@ -807,15 +842,21 @@ if ( !class_exists( 'MyunaAPIData' ) ) {
                 $i++;
             }
 
-
-            echo json_encode(array(
+            self::savedb('featured_programs', array(
                 'spring' => $springPrograms,
                 'summer' => $summerPrograms,
                 'fall' => $fallPrograms,
                 'winter' => $winterPrograms,
             ));
-
-            wp_die(); 
+            
+            $resp['featured_programs'] = array(
+                'spring' => count($springPrograms),
+                'summer' => count($summerPrograms),
+                'fall' => count($fallPrograms),
+                'winter' => count($winterPrograms),
+            );
+            echo json_encode($resp);
+            exit;
         }
 
     }

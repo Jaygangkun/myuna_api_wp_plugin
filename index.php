@@ -19,8 +19,10 @@ Text Domain:
 
 */
 
+include ('functions.php');
 include ('includes/MyunaAPIPlugin.php');
 
 MyunaAPIPlugin::init();
+
 
 ?>
