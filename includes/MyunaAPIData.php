@@ -29,8 +29,10 @@ if ( !class_exists( 'MyunaAPIData' ) ) {
             $resp = array('success' => true);
             self::savedb('settings', array(
                 'times' => isset($_POST['times']) ? $_POST['times'] : '',
+                'start_at' => isset($_POST['start_at']) ? $_POST['start_at'] : '',
             ));
                         
+            wp_clear_scheduled_hook( 'myuna_api_schedule_hook' );
             echo json_encode($resp);
             exit;
         }

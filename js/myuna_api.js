@@ -1,6 +1,7 @@
 (function($){
     $(document).ready(function(){
-        
+        var today = new Date().toISOString();
+        document.getElementById("myuna_api_start_at").min = today;
     })
 
     $(document).on('click', '#myuna_api_import_manually_btn', function(){
@@ -29,7 +30,8 @@
             type: 'post',
             data: {
                 action: 'save_settings',
-                times: $('#myuna_api_times').val()
+                times: $('#myuna_api_times').val(),
+                start_at: $('#myuna_api_start_at').val()
             },
             success: function(resp) {
                 alert('Saved Successfully');
