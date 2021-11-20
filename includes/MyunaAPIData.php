@@ -42,10 +42,6 @@ if ( !class_exists( 'MyunaAPIData' ) ) {
             return unserialize(file_get_contents($file));
         }
 
-        function cronjob() {
-            self::import_featured_programs();
-        }
-
         function import_featured_programs(){
             set_time_limit(0);
             $resp = array('success' => true);
@@ -855,8 +851,8 @@ if ( !class_exists( 'MyunaAPIData' ) ) {
                 'winter' => $winterPrograms,
             ));
 
-            $import_date = date('Y/m/d h:i:sa');
-            self::savedb('history', ['date' => $import_date]);
+            $import_date_datetime = new DateTime('now', new DateTimeZone('America/Vancouver'));
+            self::savedb('history', ['date' => $import_date_datetime->format('Y/m/d h:i:s A')]);
             
             $resp['featured_programs'] = array(
                 'spring' => count($springPrograms),
@@ -865,7 +861,7 @@ if ( !class_exists( 'MyunaAPIData' ) ) {
                 'winter' => count($winterPrograms)                
             );
 
-            $resp['date'] = $import_date;
+            $resp['date'] = $import_date_datetime->format('Y/m/d h:i:s A');
             
             echo json_encode($resp);
             exit;

@@ -4,7 +4,7 @@ include ('MyunaAPIShortcode.php');
 
 function myuna_api_schedule_hook() {
     $myunaAPIData = new MyunaAPIData();
-    $myunaAPIData->cronjob();
+    $myunaAPIData->import_featured_programs();
 }
 
 function myuna_api_cron_schedules($schedules){
@@ -18,15 +18,15 @@ function myuna_api_cron_schedules($schedules){
 
         if(isset($settings['start_at'])) {
             $start_at = $settings['start_at'];
-        }
-        else {
-            $start_at = time();
-        }
+            $start_at_datetime = new DateTime($start_at, new DateTimeZone('America/Vancouver'));
+            // $start_at_datetime->setTimezone(new DateTimeZone('UTC'));
 
-        if(!isset($schedules["myuna_cron_schedule"])){
-            $schedules["myuna_cron_schedule"] = array(
-                'interval' => $interval * 3600,
-                'display' => __('Once every '.$interval.' hours from '.gmdate('Y-m-d H:i:s', strtotime($start_at))));
+            if(!isset($schedules["myuna_cron_schedule"])){
+                $schedules["myuna_cron_schedule"] = array(
+                    'interval' => $interval * 3600,
+                    'display' => __('Once every '.$interval.' hours from '.$start_at_datetime->format('Y-m-d H:i:s'))
+                );
+            }
         }
     }
     
@@ -50,6 +50,7 @@ if ( !class_exists( 'MyunaAPIPlugin' ) ) {
             MyunaAPIShortcode::init();
 
             add_action( 'init', ['MyunaAPIPlugin', 'myuna_api_register_cronjob'] );
+            add_action( 'admin_init', ['MyunaAPIPlugin', 'myuna_api_register_cronjob'] );
             add_action( 'myuna_api_schedule_hook', 'myuna_api_schedule_hook' );
 
         }
@@ -63,11 +64,11 @@ if ( !class_exists( 'MyunaAPIPlugin' ) ) {
                 $start_at = time();
                 if($settings) {
                     if(isset($settings['start_at'])) {
-                        $start_at = strtotime($settings['start_at']);
+                        $start_at_datetime = new DateTime($settings['start_at'], new DateTimeZone('America/Vancouver'));
+                        // $start_at_datetime->setTimezone(new DateTimeZone('UTC'));
+                        wp_schedule_event( $start_at_datetime->getTimestamp(), 'myuna_cron_schedule', 'myuna_api_schedule_hook', array(), true);
                     }
                 }
-                
-                wp_schedule_event( $start_at, 'myuna_cron_schedule', 'myuna_api_schedule_hook', array(), true);
             }
         }        
 
@@ -138,7 +139,7 @@ if ( !class_exists( 'MyunaAPIPlugin' ) ) {
             register_setting( 'myuna_api_plugin_options', 'myuna_api_plugin_options', ['MyunaAPIPlugin', 'myuna_api_plugin_options_validate'] );
             add_settings_section( 'myuna_api_settings', 'Myuna API Settings', ['MyunaAPIPlugin', 'myuna_api_plugin_section_text'], 'myuna_api_plugin' );
         
-            add_settings_field( 'myuna_api_start_at', 'Start at', ['MyunaAPIPlugin', 'myuna_api_plugin_setting_start_at'], 'myuna_api_plugin', 'myuna_api_settings' );
+            add_settings_field( 'myuna_api_start_at', 'Start at (Vancouver, Canada Timezone)', ['MyunaAPIPlugin', 'myuna_api_plugin_setting_start_at'], 'myuna_api_plugin', 'myuna_api_settings' );
             add_settings_field( 'myuna_api_times', 'Interval', ['MyunaAPIPlugin', 'myuna_api_plugin_setting_times'], 'myuna_api_plugin', 'myuna_api_settings' );
         }
 
@@ -182,6 +183,7 @@ if ( !class_exists( 'MyunaAPIPlugin' ) ) {
             }
             
             echo "<input id='myuna_api_start_at' type='datetime-local' value='" . $value . "' />";
+            echo "<div style='display: none'><div id='pst_time'></div><div id='utc_time'></div></div>";
         }
 
         function myuna_api_plugin_setting_times() {
