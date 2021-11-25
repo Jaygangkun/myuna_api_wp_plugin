@@ -53,6 +53,13 @@ if ( !class_exists( 'MyunaAPIPlugin' ) ) {
             add_action( 'admin_init', ['MyunaAPIPlugin', 'myuna_api_register_cronjob'] );
             add_action( 'myuna_api_schedule_hook', 'myuna_api_schedule_hook' );
 
+            // /wp-json/myuna-api/import
+            add_action( 'rest_api_init', function () {
+                register_rest_route( 'myuna-api', 'import', array(
+                    'methods' => 'GET',
+                    'callback' => 'myuna_api_schedule_hook',
+                ) );
+            });
         }
 
         function myuna_api_register_cronjob() {
