@@ -130,7 +130,7 @@ if ( !class_exists( 'MyunaAPIPlugin' ) ) {
                 settings_fields( 'myuna_api_plugin_options' );
                 do_settings_sections( 'myuna_api_plugin' );
                 ?>
-                <button class="button button-primary" id="myuna_api_settings_save_btn">
+                <button class="button button-primary" id="myuna_api_settings_save_btn" style="display: none">
                     <div class="processing-btn-wrap">
                         <div><?php esc_attr_e( 'Save' ); ?></div>
                         <div class="icon"></div>
@@ -146,8 +146,8 @@ if ( !class_exists( 'MyunaAPIPlugin' ) ) {
             register_setting( 'myuna_api_plugin_options', 'myuna_api_plugin_options', ['MyunaAPIPlugin', 'myuna_api_plugin_options_validate'] );
             add_settings_section( 'myuna_api_settings', 'Myuna API Settings', ['MyunaAPIPlugin', 'myuna_api_plugin_section_text'], 'myuna_api_plugin' );
         
-            add_settings_field( 'myuna_api_start_at', 'Start at (Vancouver, Canada Timezone)', ['MyunaAPIPlugin', 'myuna_api_plugin_setting_start_at'], 'myuna_api_plugin', 'myuna_api_settings' );
-            add_settings_field( 'myuna_api_times', 'Interval', ['MyunaAPIPlugin', 'myuna_api_plugin_setting_times'], 'myuna_api_plugin', 'myuna_api_settings' );
+            // add_settings_field( 'myuna_api_start_at', 'Start at (Vancouver, Canada Timezone)', ['MyunaAPIPlugin', 'myuna_api_plugin_setting_start_at'], 'myuna_api_plugin', 'myuna_api_settings' );
+            // add_settings_field( 'myuna_api_times', 'Interval', ['MyunaAPIPlugin', 'myuna_api_plugin_setting_times'], 'myuna_api_plugin', 'myuna_api_settings' );
         }
 
         function myuna_api_plugin_options_validate( $input ) {
